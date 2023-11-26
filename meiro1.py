@@ -1,0 +1,13 @@
+stk=[]
+stk.append([3,0])
+print(stk) 
+stk.append([5,2])
+print(stk)
+stk.append([8,3])
+print(stk)
+top=stk.pop()
+print("top=",top)
+stk.append([100,200])
+print(stk)
+stk.pop()
+print(stk)
