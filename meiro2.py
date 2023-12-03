@@ -1,4 +1,4 @@
-#a
+
 import pygame
 from pygame.locals import *
 import sys
@@ -18,7 +18,7 @@ def main():
     stk=[]
     start=[0,0]
     goal=[5,5]
-    kakunin=[]
+    kakunin=[]#通った場所を入れておく配列 結果的に二次元配列になる
     map=[[0,0,0,0,1,1],
         [0,1,0,1,1,0],
         [0,1,0,0,0,0],
@@ -89,7 +89,7 @@ def main():
             stk.pop()
         
             
-
+        
         return kakunin
             
             
