@@ -8,16 +8,17 @@ def meiro(map,start,goal,g,r,hx,hy,stk,kakunin):
         print("stk=",stk)
         top=stk.pop()
         if top==goal:
+            print("ゴール")
             break
-        hx=top[0]
-        hy=top[1]
+        hx=top[1]
+        hy=top[0]
         kakunin.append(top)        
-        print("top=",top)
-        print("kakunin=",kakunin)
+        #print("top=",top)
+        #print("kakunin=",kakunin)
 
         hy=hy-1#上確認
-        stk.append([hx,hy])#とりあえず積む
-        k2=[hx,hy] in kakunin
+        stk.append([hy,hx])#とりあえず積む
+        k2=[hy,hx] in kakunin
         if map[hy][hx]==1:#壁だったら外す
             stk.pop()
         elif hy<0:#場外だったら外す
@@ -29,8 +30,8 @@ def meiro(map,start,goal,g,r,hx,hy,stk,kakunin):
         hy=top[1]
 
         hy=hy+1#下確認
-        stk.append([hx,hy])#とりあえず積む
-        k2=[hx,hy] in kakunin
+        stk.append([hy,hx])#とりあえず積む
+        k2=[hy,hx] in kakunin
         if map[hy][hx]==1:#壁だったら外す
             stk.pop()
         elif hy>g:#場外だったら外す
@@ -41,8 +42,8 @@ def meiro(map,start,goal,g,r,hx,hy,stk,kakunin):
             
             
         hx=hx-1#左確認
-        stk.append([hx,hy])#とりあえず積む
-        k2=[hx,hy] in kakunin
+        stk.append([hy,hx])#とりあえず積む
+        k2=[hy,hx] in kakunin
         if map[hy][hx]==1:#壁だったら外す
             stk.pop()
         elif hx<0:#場外だったら外す
@@ -54,11 +55,12 @@ def meiro(map,start,goal,g,r,hx,hy,stk,kakunin):
         
         
         hx=hx+1#右確認
-        stk.append([hx,hy])#とりあえず積む
-        k2=[hx,hy] in kakunin
+        stk.append([hy,hx])#とりあえず積む
+        k2=[hy,hx] in kakunin
+        #print("@59",hy,hx)
         if map[hy][hx]==1:#壁だったら外す
             stk.pop()
-        elif hx>r:#場外だったら外す
+        if hx>r:#場外だったら外す
             stk.pop()
         elif k2== True:#一度通っていたら外す
             stk.pop()
@@ -70,14 +72,12 @@ def main():
     hy=0
     stk=[]
     start=[0,0]
-    goal=[5,5]
+    goal=[2,2]
     kakunin=[]#通った場所を入れておく配列 結果的に二次元配列になる
-    map=[[0,0,0,0,1,1],
-        [0,1,0,1,1,0],
-        [0,1,0,0,0,0],
-        [0,0,1,0,1,0],
-        [1,1,0,1,1,0],
-        [0,0,0,0,0,0],
+    map=[[0,0,0,0],
+        [0,1,0,1],
+        [0,1,0,0],
+        [0,0,1,0],
         ]
     g=len(map)
     r=len(map[0])
