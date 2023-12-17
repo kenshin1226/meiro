@@ -57,7 +57,7 @@ def meiro(map,start,goal,g,r,hx,hy,stk,kakunin):
         hx=hx+1#右確認
         stk.append([hy,hx])#とりあえず積む
         k2=[hy,hx] in kakunin
-        #print("@59",hy,hx)
+        print("@59",hy,hx)
         if map[hy][hx]==1:#壁だったら外す
             stk.pop()
         if hx>r:#場外だったら外す
