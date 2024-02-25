@@ -2,28 +2,36 @@
 import pygame
 from pygame.locals import *
 import sys
-def meiro(map,start,goal,stk,kakunin):
+def meiro(map,start,goal,stk,kakunin,path):
     g=len(map)
     r=len(map[0])
-    stk.append(start)  #スタート地点をスタックする
+    stk.append([start,path])  #スタート地点をスタックする  
     while True:
         print("----------")
         print("@8 stk=",stk)
-        top=stk.pop()#通った場所の座標
-        print(f"@10 {top=}")
+        top2=stk.pop()#通った場所の座標#stkが今まで通った場所も含んでいるからtop2を使っている
+        #stkにはトレース図の赤い数字と青い数字が積まれている、ここから一番上をとってきたのがtop2である。
+        #赤い数字だけ取り出したいので15行目を行った。
+        top=top2[0]#赤い数字
+        blue=top2[1]#青い数字
+        
+        print(f"@15 {top=}")
+        print(f"@16{top[1]=}")
         print(f"@11 {stk=}")
         if top==goal:
             print("ゴール")
             break
         hr=top[1]#右の座標
         hg=top[0]#左の座標
-        kakunin.append(top)        
-        #print("top=",top)
-        #print("kakunin=",kakunin)
+        kakunin.append(top) 
+        path.append(top)        
+        print(f"@26,{top=}")
+        #print("@22kakunin=",kakunin)
+        
         
         nr=top[1]#右の座標
         ng=top[0]#左の座標
-        
+        print(f"@28{ng=}{hg=}")
         ng=hg-1#上確認
         if ng>=0 :
             print(f"@26 {ng=} {nr=}")
@@ -64,6 +72,7 @@ def meiro(map,start,goal,stk,kakunin):
         
         
         nr=hr+1#右確認
+        blue.append(top)
         if nr<r:
             stk.append([ng,nr])#とりあえず積む
             print(f"@64{stk=}")
@@ -83,8 +92,9 @@ def main():
     ng=0
     stk=[]
     start=[0,0]
-    goal=[2,2]
+    goal=[3,3]
     kakunin=[]#通った場所を入れておく配列 結果的に二次元配列になる
+    path=[]
     #00,01,02,12,22が正しい
     map=[[0,0,0,0],
         [0,1,0,1],
@@ -92,7 +102,7 @@ def main():
         [0,0,1,0],
         ]
     
-    meiro(map,start,goal,stk,kakunin)  
+    meiro(map,start,goal,stk,kakunin,path)  
 main()
 
             
