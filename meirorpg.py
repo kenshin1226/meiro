@@ -46,8 +46,7 @@ class Player():
                 self.kf=False
                 self.bt=False
                 print(f"{self.gct=}")
-        if self.gct==3:
-            print("クリア")
+                
         return (self.pg,self.pr)
     def draw(self,screen):
         pygame.draw.circle(screen,(10,10,255),(self.pr*50+25,self.pg*50+25),25)  #プレイヤー     
@@ -69,9 +68,9 @@ class Teki():
             if self.ct%10==0:
                 self.eg=ans[1][0]
                 self.er=ans[1][1]
-        if start==goal:
-            print( "ゲームオーバー")
+        elif len(ans)==1:
             self.status=True
+            
     def draw(self,screen):
         pygame.draw.circle(screen,(255,100,10),(self.er*50+25,self.eg*50+25),25)  # 敵
 def meiro(map,start,goal):
@@ -139,6 +138,10 @@ def main():
         T2.update(P1,map)
         T2.draw(screen)
         if T1.status==True or T2.status==True:
+            print("ゲームオーバー")
+            break
+        if P1.gct==3:
+            print("クリア")
             break
         ck.tick(30) #1秒間で30フレームになるように33msecのwait
 
