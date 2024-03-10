@@ -56,6 +56,7 @@ class Teki():
         self.eg=g
         self.er=r
         self.ct=0
+        self.status=False#敵がプレイヤーを捕まえた
     def update(self,P1,map):
         start=(self.eg,self.er)
         goal=(P1.pg,P1.pr)
@@ -68,6 +69,9 @@ class Teki():
             if self.ct%10==0:
                 self.eg=ans[1][0]
                 self.er=ans[1][1]
+        if start==goal:
+            print( "ゲームオーバー")
+            self.status=True
     def draw(self,screen):
         pygame.draw.circle(screen,(255,100,10),(self.er*50+25,self.eg*50+25),25)  # 敵
 def meiro(map,start,goal):
@@ -134,8 +138,7 @@ def main():
         T1.draw(screen)
         T2.update(P1,map)
         T2.draw(screen)
-        if [P1.pg,P1.pr]==[T1.eg,T1.er]:
-            print("ゲームオーバー")
+        if T1.status==True or T2.status==True:
             break
         ck.tick(30) #1秒間で30フレームになるように33msecのwait
 
