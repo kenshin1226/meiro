@@ -10,6 +10,7 @@ class Player():
         self.kf=False
         self.anaf=False
         self.anact=3#穴を掘れる回数 
+        self.bf=False#breakのフラグ
     def update(self,map):
         # イベント処理
         for event in pygame.event.get():  # イベントを取得
@@ -25,6 +26,7 @@ class Player():
                     elif mods & pygame.KMOD_SHIFT:  # Ctrlキーが押されているかチェック
                         print("SHIFT + Left Arrow")
                         map[self.pg][self.pr-1]=0
+                        self.anact=self.anact-1
                     else:
                         print("Left Arrow")
                         self.pr=self.pr-1
@@ -35,6 +37,7 @@ class Player():
                     if mods & pygame.KMOD_SHIFT:  # Ctrlキーが押されているかチェック
                         print("SHIFT + Left Arrow")
                         map[self.pg][self.pr+1]=0
+                        self.anact=self.anact-1
                     else:
                         print("Left Arrow")
                         if self.pr<len(map[0])-1:
@@ -44,6 +47,7 @@ class Player():
                     if mods & pygame.KMOD_SHIFT:  # Ctrlキーが押されているかチェック
                         print("SHIFT + Left Arrow")
                         map[self.pg-1][self.pr]=0
+                        self.anact=self.anact-1
                     else:
                         print("Left Arrow")
                         self.pg=self.pg-1
@@ -55,12 +59,15 @@ class Player():
                     if mods & pygame.KMOD_SHIFT:  # Ctrlキーが押されているかチェック
                         print("SHIFT + Left Arrow")
                         map[self.pg+1][self.pr]=0
+                        self.anact=self.anact-1
                     else:
                         print("Left Arrow")
                         if self.pg<len(map)-1:
                             if map[self.pg+1][self.pr]==0:
                                 self.pg=self.pg+1
-                            
+                elif event.key==K_SPACE:
+                    if self.gct==3:
+                        self.bf=True
                     
             if self.pg<0:
                self.pg=self.pg+1
@@ -203,8 +210,11 @@ def main():
         if P1.gct==3:
             print("クリア")
             end=2
-            if [P1.pg,P1.pr]==[0,0]:
+            # if [P1.pg,P1.pr]==[0,0]:
+            #     break
+            if P1.bf==True:
                 break
+            
         ck.tick(30) #1秒間で30フレームになるように33msecのwait
 
         pygame.display.update()                                       # 画面更新
