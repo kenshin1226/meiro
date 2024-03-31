@@ -6,7 +6,7 @@ class Player():
         self.pg=0
         self.pr=0
         self.gct=0
-        self.bt=False
+        self.bt=True#エサの座標のスイッチ
         self.kf=False
         self.anaf=False
         self.anact=3#穴を掘れる回数 
@@ -68,8 +68,10 @@ class Player():
                 self.pr=self.pr+1
             
             if [self.pg,self.pr]==[0,0]:
-                self.bt=True
-            if [self.pg,self.pr]==[7,7] and self.kf==True and self.bt==True:
+                if self.bt==False:
+                    self.gct=self.gct+1
+                    self.bt=True
+            if [self.pg,self.pr]==[10,10] and self.kf==True and self.bt==True :
                 self.gct=self.gct+1
                 self.kf=False
                 self.bt=False
@@ -79,15 +81,16 @@ class Player():
         return (self.pg,self.pr)
     def draw(self,screen):
         pygame.draw.circle(screen,(10,10,255),(self.pr*50+25,self.pg*50+25),25)  #プレイヤー     
-        font = pygame.font.SysFont("yumincho", 100)           
+        font = pygame.font.SysFont("yumincho", 100)    
+        font2 = pygame.font.SysFont("yumincho", 50)       
         gTxt = font.render(str(3-self.gct), True, (55,255,25)) # 描画する文字列を画像にする
         screen.blit(gTxt, [600,100])                    # 画像を表示
         gTxt2 = font.render("/3", True, (55,255,25)) # 描画する文字列を画像にする
         screen.blit(gTxt2, [650,100])                    # 画像を表示
-        gTxt = font.render(str(self.anact)+"回", True, (55,255,25)) # 描画する文字列を画像にする
-        screen.blit(gTxt, [670,300])                    # 画像を表示
-        gTxt2 = font.render("残り", True, (55,255,25)) # 描画する文字列を画像にする
-        screen.blit(gTxt2, [570,300])                    # 画像を表示
+        gTxt3 = font2.render(str(self.anact)+"回", True, (55,255,25)) # 描画する文字列を画像にする
+        screen.blit(gTxt3, [670,300])                    # 画像を表示
+        gTxt4 = font2.render("残り", True, (55,255,25)) # 描画する文字列を画像にする
+        screen.blit(gTxt4, [570,300])                    # 画像を表示
             
 
 
@@ -145,17 +148,21 @@ def main():
     py=100
     end=0
     
-    map=[[0,0,0,0,0,0,1,1],
-        [0,1,0,0,1,0,1,0],
-        [0,1,0,1,1,0,0,0],
-        [0,1,0,0,1,0,0,0],
-        [0,0,1,1,1,1,1,0],
-        [0,0,0,0,0,1,1,0],
-        [0,1,1,0,0,0,0,0],
-        [0,0,1,0,0,1,1,0]]
+    map=[[0,0,0,0,0,0,1,1,0,0,1],
+        [0,1,0,0,1,0,1,0,0,1,1],
+        [0,1,0,1,1,0,0,0,0,0,0],
+        [0,1,0,0,1,0,0,0,1,0,0],
+        [0,0,1,1,1,1,1,0,1,1,0],
+        [0,0,0,0,0,1,1,0,0,1,1],
+        [0,1,1,0,0,0,0,0,0,0,0],
+        [0,0,1,0,1,1,1,0,0,0,0],
+        [0,0,1,0,0,1,1,0,0,0,0],
+        [0,0,1,0,0,1,0,0,0,0,0],
+        [0,0,1,0,0,1,0,0,0,0,0]]
     P1=Player()
     T1=Teki(5,4)
     T2=Teki(7,0)
+    T3=Teki(9,2)
     #T3=Teki(3,3)
     ck = pygame.time.Clock()
     ct=0
@@ -172,6 +179,11 @@ def main():
                     pygame.draw.rect(screen, (255,0,0), Rect(x,y,50,50))  
                 else:
                     pygame.draw.rect(screen, (60,0,0), Rect(x,y,50,50))    # ■
+        if P1.bt==False:            
+            pygame.draw.circle(screen,(240,240,0),(20,20),10)#餌   
+        elif P1.bt==True:
+            pygame.draw.circle(screen,(240,240,0),(520,520),10)#餌   
+                    
         pgr=P1.update(map)
         P1.draw(screen)
   
@@ -179,10 +191,12 @@ def main():
         T1.draw(screen)
         T2.update(P1,map)
         T2.draw(screen)
+        T3.update(P1,map)
+        T3.draw(screen)
         #T3.update(P1,map)
         #T3.draw(screen)
         
-        if T1.status==True or T2.status==True:
+        if T1.status==True or T2.status==True or T3.status==True:
             print("ゲームオーバー")
             end=1
             break
